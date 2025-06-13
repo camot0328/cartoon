@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보 수정</title>
+</head>
+<body>
+    <h1>회원 정보 수정</h1>
+
+    <!-- 오류 메시지 출력 -->
+    <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+    <form th:action="@{/mypage/profile}" method="post">
+        <label for="nickname">닉네임:</label>
+        <input type="text" id="nickname" name="nickname" th:value="${user.nickname}" required>
+        <br><br>
+
+        <label for="currentPassword">현재 비밀번호:</label>
+        <input type="password" id="currentPassword" name="currentPassword" required>
+        <br><br>
+
+        <label for="newPassword">새 비밀번호:</label>
+        <input type="password" id="newPassword" name="newPassword">
+        <br><br>
+
+        <label for="confirmPassword">새 비밀번호 확인:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword">
+        <br><br>
+
+        <button type="submit">정보 수정</button>
+    </form>
+
+    <div class="go-back">
+        <a href="/mypage">마이페이지로 돌아가기</a>
+    </div>
+</body>
+</html>

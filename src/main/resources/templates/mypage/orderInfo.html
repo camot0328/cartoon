@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>주문 상세 정보</title>
+</head>
+<body>
+    <h1 th:text="'주문 번호: ' + ${orderId}">주문 상세 정보</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>상품명</th>
+                <th>수량</th>
+                <th>가격</th>
+                <th>합계</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${orderItems}">
+                <td th:text="${item.product.title}">상품명</td>
+                <td th:text="${item.quantity}">1</td>
+                <td th:text="${item.price}">5000</td>
+                <td th:text="${item.price * item.quantity}">합계</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/mypage/orders/{orderId}/cancel(orderId=${orderId})}" method="post">
+        <button type="submit" style="color:red;">주문 취소</button>
+    </form>
+
+    <p style="color: red;">※ 주문 후 3일 이내만 취소 가능합니다.</p>
+
+    <div>
+        <a href="/mypage/orders">주문 목록으로 돌아가기</a>
+    </div>
+</body>
+</html>

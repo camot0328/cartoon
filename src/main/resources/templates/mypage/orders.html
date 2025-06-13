@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>주문 내역</title>
+</head>
+<body>
+    <h1>주문 내역</h1>
+
+    <!-- 🔽 필터 버튼 -->
+    <div>
+        <form th:action="@{/mypage/orders}" method="get">
+            <button type="submit" name="filter" value="">전체</button>
+            <button type="submit" name="filter" value="week">이번 주</button>
+            <button type="submit" name="filter" value="month">이번 달</button>
+        </form>
+    </div>
+
+    <div th:if="${orders.isEmpty()}">
+        <p>주문 내역이 없습니다.</p>
+    </div>
+
+    <div class="order-list" th:unless="${orders.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th>주문 ID</th>
+                    <th>상품명</th>
+                    <th>수량</th>
+                    <th>가격</th>
+                    <th>주문일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}">주문ID</td>
+                    <td th:text="${order.totalPrice}">금액</td>
+                    <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">2025-01-01</td>
+                    <td>
+                        <a th:href="@{'/mypage/orders/' + ${order.id}}">상세</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="go-back">
+        <a href="/mypage">마이페이지로 돌아가기</a>
+    </div>
+</body>
+</html>

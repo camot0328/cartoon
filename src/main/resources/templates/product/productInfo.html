@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 상세 정보</title>
+</head>
+<body>
+<div id="productInfo-container">
+    <h1 class="product-title">상품 상세 정보</h1>
+
+    <!-- ✅ 썸네일 이미지 -->
+    <div>
+        <img th:src="${product.thumbnailImg}" alt="썸네일 이미지" width="150">
+    </div>
+
+    <!-- ✅ 상품 정보 -->
+    <div class="productInfo-details">
+        <h2 class="productInfo-name" th:text="${product.title}">제목</h2>
+        <p class="productInfo-author">작가: <span th:text="${product.author}">저자</span></p>
+        <p class="productInfo-publisher">출판사: <span th:text="${product.publisher}">출판사</span></p>
+        <p class="productInfo-date">출간일: <span th:text="${product.publishDate}">출간일</span></p>
+        <p class="productInfo-price">가격: <span th:text="${product.price}">가격</span>원</p>
+    </div>
+
+    <!-- ✅ 수량 선택 및 장바구니/바로구매 버튼 -->
+    <div class="productInfo-actions">
+        <form class="cart-form" method="post" action="/cart/add">
+            <input type="hidden" name="productId" th:value="${product.id}" />
+            <label for="quantity">수량:</label>
+            <input id="quantity" type="number" name="quantity" value="1" min="1"/>
+            <button type="submit">장바구니 담기</button>
+        </form>
+
+        <form class="buy-form" method="post" action="/order/add">
+            <input type="hidden" name="productId" th:value="${product.id}" />
+            <input type="hidden" name="quantity" value="1" />
+            <button type="submit">바로 구매</button>
+        </form>
+    </div>
+
+    <!-- ✅ 상세 설명 이미지 -->
+    <div class="back-link">
+        <a href="/product/list">상품 목록으로 돌아가기</a>
+    </div>
+</body>
+</html>

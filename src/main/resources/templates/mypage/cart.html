@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr th:each="item : ${cartItems}">
+        <td th:text="${item.product.title}">상품명</td>
+        <td>
+            <form th:action="@{/mypage/cart/update}" method="post">
+                <input type="hidden" name="productId" th:value="${item.product.id}" />
+                <input type="number" name="quantity" th:value="${item.quantity}" min="1" />
+                <button type="submit">수량 변경</button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/mypage/cart/delete}" method="post">
+                <input type="hidden" name="productId" th:value="${item.product.id}" />
+                <button type="submit" style="color:red;">삭제</button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/order/add}" method="post">
+                <input type="hidden" name="productId" th:value="${item.product.id}" />
+                <input type="hidden" name="quantity" th:value="${item.quantity}" />
+                <button type="submit">바로 구매</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

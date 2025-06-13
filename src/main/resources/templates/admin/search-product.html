@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 검색 결과</title>
+</head>
+<body>
+    <h1>상품 정보</h1>
+    <p><strong>제목:</strong> <span th:text="${product.title}"></span></p>
+    <p><strong>출판사:</strong> <span th:text="${product.publisher}"></span></p>
+    <p><strong>가격:</strong> <span th:text="${product.price}"></span></p>
+
+    <h2>판매 이력</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>주문 ID</th>
+            <th>구매자</th>
+            <th>수량</th>
+            <th>가격</th>
+            <th>주문일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${sales}">
+            <td th:text="${item.order.id}"></td>
+            <td th:text="${item.order.user.userid}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${#temporals.format(item.order.orderDate, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <a href="/admin">관리자 대시보드로 돌아가기</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 상세 정보</title>
+</head>
+<body>
+    <h1>회원 상세 정보</h1>
+
+    <p><strong>아이디:</strong> <span th:text="${user.userid}"></span></p>
+    <p><strong>닉네임:</strong> <span th:text="${user.nickname}"></span></p>
+    <p><strong>가입일:</strong> <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+
+    <h2>주문 내역</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>주문 ID</th>
+            <th>총 금액</th>
+            <th>주문일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">1</td>
+            <td th:text="${order.totalPrice}">15000</td>
+            <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">2025-01-01</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px">
+        <a href="/admin/users">← 회원 목록으로 돌아가기</a>
+    </div>
+</body>
+</html>

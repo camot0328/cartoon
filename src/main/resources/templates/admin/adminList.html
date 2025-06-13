@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 관리 (관리자)</title>
+</head>
+<body>
+    <h1>상품 관리</h1>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>상품 ID</th>
+            <th>제목</th>
+            <th>저자</th>
+            <th>가격</th>
+            <th>재고 상태</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}">1</td>
+            <td th:text="${product.title}">제목</td>
+            <td th:text="${product.author}">저자</td>
+            <td th:text="${product.price}">10000</td>
+            <td th:text="${product.stock.state}">판매중</td>
+            <td>
+                <form th:action="@{'/admin/products/' + (${product.stock.state.name() == '삭제됨'} ? 'restore/' : 'delete/') + ${product.id}}" method="post">
+                    <button type="submit" th:text="${product.stock.state.name() == '삭제됨' ? '복원' : '삭제'}"></button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px">
+        <a href="/admin">← 관리자 대시보드로 돌아가기</a>
+    </div>
+</body>
+</html>
