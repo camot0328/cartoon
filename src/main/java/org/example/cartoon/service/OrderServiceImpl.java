@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderServiceInterface{
 
     // 주문 생성
     Order order = Order.builder()
-        .users(user)
+        .user(user)
         .orderDate(LocalDateTime.now())
         .totalPrice(product.getPrice() * quantity)
         .build();
@@ -77,6 +77,11 @@ public class OrderServiceImpl implements OrderServiceInterface{
   @Override
   public List<OrderItem> getSalesByProductId(Integer productId) {
     return orderItemRepository.findByProductId(productId);
+  }
+
+  @Override
+  public List<Order> getAllOrders() {
+    return List.of();
   }
 
 }

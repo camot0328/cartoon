@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>주문 관리</title>
+</head>
+<body>
+    <h1>관리자 주문 목록</h1>
+
+    <!-- 검색 폼 -->
+    <form method="get" action="/admin/orders">
+        <label for="userid">사용자 ID 검색:</label>
+        <input type="text" name="userid" id="userid" th:value="${search}" />
+        <button type="submit">검색</button>
+    </form>
+
+    <br/>
+    <div th:if="${orders.isEmpty()}">
+        <p>주문 내역이 없습니다.</p>
+    </div>
+
+    <table border="1" th:if="${!orders.isEmpty()}">
+        <thead>
+        <tr>
+            <th>주문 ID</th>
+            <th>사용자 ID</th>
+            <th>주문일</th>
+            <th>총 금액</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">1</td>
+            <td th:text="${order.users.userid}">user01</td>
+            <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">2025-01-01</td>
+            <td th:text="${order.totalPrice}">15000</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <a href="/admin">관리자 대시보드로 돌아가기</a>
+    </div>
+</body>
+</html>

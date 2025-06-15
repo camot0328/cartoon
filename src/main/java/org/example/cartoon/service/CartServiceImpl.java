@@ -23,27 +23,32 @@ public class CartServiceImpl implements CartServiceInterface {
   private final ProductRepository productRepository;
 
   @Override
-  public List<CartItem> getCartItems(String userid) {
-    Users user = userRepository.findByUserid(userid)
+  public List<CartItem> getCartItems(Integer userid) {
+    Users user = userRepository.findById(userid)
         .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + userid));
 
     log.info("CartService: {}의 장바구니 항목 조회", userid);
 
-    return cartItemRepository.findByCartUserId(user.getUserid());
+    return cartItemRepository.findByCartUserId(user.getId());
   }
 
   @Override
-  public void updateQuantity(String userid, Integer productId, Integer quantity) {
-    CartItem item = cartItemRepository.findByCartUsersAndProductId(userid, productId)
-        .orElseThrow(() -> new IllegalArgumentException("장바구니 항목을 찾을 수 없습니다."));
+  public void updateQuantity(Integer userId, Integer productId, Integer quantity) {
+    Users user = userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
 
+    CartItem item = cartItemRepository.findByCartUserAndProductId(user, productId)
+        .orElseThrow(() -> new IllegalArgumentException("장바구니 항목 없음"));
     item.setQuantity(quantity);
     cartItemRepository.save(item);
   }
 
   @Override
-  public void removeItem(String userid, Integer productId) {
-    CartItem item = cartItemRepository.findByCartUsersAndProductId(userid, productId)
+  public void removeItem(Integer userId, Integer productId) {
+    Users user = userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+
+    CartItem item = cartItemRepository.findByCartUserAndProductId(user, productId)
         .orElseThrow(() -> new IllegalArgumentException("장바구니 항목을 찾을 수 없습니다."));
 
     cartItemRepository.delete(item);

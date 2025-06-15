@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>상품 관리 (관리자)</title>
+    <script src="/js/admin.js"></script>
 </head>
 <body>
     <h1>상품 관리</h1>
@@ -26,8 +27,12 @@
             <td th:text="${product.price}">10000</td>
             <td th:text="${product.stock.state}">판매중</td>
             <td>
-                <form th:action="@{'/admin/products/' + (${product.stock.state.name() == '삭제됨'} ? 'restore/' : 'delete/') + ${product.id}}" method="post">
-                    <button type="submit" th:text="${product.stock.state.name() == '삭제됨' ? '복원' : '삭제'}"></button>
+                <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" onsubmit="return confirmPassword()">
+                    <input type="hidden" name="password" id="passwordInput" />
+                    <button type="submit">삭제</button>
+                </form>
+                <form th:action="@{'/admin/products/restore/' + ${product.id}}" method="post">
+                    <button type="submit">복원</button>
                 </form>
             </td>
         </tr>

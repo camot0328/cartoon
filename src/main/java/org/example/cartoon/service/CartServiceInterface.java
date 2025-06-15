@@ -9,9 +9,9 @@ public interface CartServiceInterface {
    * @param userid - 사용자 ID
    * @return 장바구니 항목 리스트
    */
-  List<CartItem> getCartItems(String userid);
+  List<CartItem> getCartItems(Integer userid);
 
-  void updateQuantity(String userid, Integer productId, Integer quantity);
+  void updateQuantity(Integer userid, Integer productId, Integer quantity);
 
-  void removeItem(String userid, Integer productId);
+  void removeItem(Integer userid, Integer productId);
 }

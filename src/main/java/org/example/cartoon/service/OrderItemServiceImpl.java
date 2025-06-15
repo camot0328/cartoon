@@ -39,7 +39,7 @@ public class OrderItemServiceImpl implements OrderItemServiceInterface {
         .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
 
     // 사용자 확인
-    if (!order.getUsers().getId().equals(userId)) {
+    if (!order.getUser().getId().equals(userId)) {
       throw new AccessDeniedException("해당 주문에 접근할 수 없습니다.");
     }
 

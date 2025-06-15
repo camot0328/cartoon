@@ -14,7 +14,8 @@ import java.util.List;
 @Builder(toBuilder = true)
 @Table(name = "user")
 public class Users {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(nullable = false, unique = true, length = 50)
@@ -37,5 +38,5 @@ public class Users {
   private Cart cart;
 
   @OneToMany(mappedBy = "user")
-  private List<Order> orders = new ArrayList<>();
+  private List<Order> orderList = new ArrayList<>();
 }

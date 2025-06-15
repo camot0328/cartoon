@@ -22,7 +22,7 @@ public class Cart {
   @OneToOne
   @MapsId
   @JoinColumn(name = "user_id")
-  private Users users;
+  private Users user;
 
   @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CartItem> cartItems = new ArrayList<>();

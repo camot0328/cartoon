@@ -10,5 +10,5 @@ public interface OrderServiceInterface {
   List<Order> getFilteredOrders(Integer userId, String filter);
   List<Order> getOrdersByUserId(Integer userId);
   List<OrderItem> getSalesByProductId(Integer productId);
-
+  List<Order> getAllOrders();
 }

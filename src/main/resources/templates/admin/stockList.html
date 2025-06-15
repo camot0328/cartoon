@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>재고 관리</title>
+</head>
+<body>
+    <h1>재고 목록</h1>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>상품 ID</th>
+            <th>제목</th>
+            <th>현재 수량</th>
+            <th>상태</th>
+            <th>재고 증가</th>
+            <th>재고 감소</th>
+            <th>상태 변경</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stock : ${stocks}">
+            <td th:text="${stock.product.id}">1</td>
+            <td th:text="${stock.product.title}">제목</td>
+            <td th:text="${stock.quantity}">10</td>
+            <td th:text="${stock.state}">판매중</td>
+            <td>
+                <form th:action="@{'/admin/stocks/increase/' + ${stock.product.id}}" method="post">
+                    <input type="number" name="amount" min="1" value="1" />
+                    <button type="submit">추가</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{'/admin/stocks/decrease/' + ${stock.product.id}}" method="post">
+                    <input type="number" name="amount" min="1" value="1" />
+                    <button type="submit">감소</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{'/admin/stocks/updateState/' + ${stock.product.id}}" method="post">
+                    <select name="state">
+                        <option value="판매중">판매중</option>
+                        <option value="품절">품절</option>
+                        <option value="삭제됨">삭제됨</option>
+                    </select>
+                    <button type="submit">변경</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <a href="/admin">← 관리자 대시보드로 돌아가기</a>
+    </div>
+</body>
+</html>

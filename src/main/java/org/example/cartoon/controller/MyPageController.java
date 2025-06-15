@@ -57,7 +57,7 @@ public class MyPageController {
     List<OrderItem> orderItems = orderItemService.getOrderItemsByOrderId(orderId);
 
     // ❗ 본인의 주문이 아닌 경우 접근 제한 (선택사항)
-    if (orderItems.isEmpty() || !orderItems.get(0).getOrder().getUsers().getId().equals(users.getId())) {
+    if (orderItems.isEmpty() || !orderItems.get(0).getOrder().getUser().getId().equals(users.getId())) {
       throw new AccessDeniedException("해당 주문에 접근할 수 없습니다.");
     }
 
@@ -95,7 +95,7 @@ public class MyPageController {
 
     log.info("장바구니 조회 - 사용자: {}", users.getUserid());
 
-    model.addAttribute("cartItems", cartService.getCartItems(users.getUserid()));
+    model.addAttribute("cartItems", cartService.getCartItems(users.getId()));
     return "mypage/cart";
   }
 
@@ -104,8 +104,9 @@ public class MyPageController {
   public String updateQuantity(@AuthenticationPrincipal User userDetails,
                                @RequestParam("productId") Integer productId,
                                @RequestParam("quantity") Integer quantity) {
-    String userid = userDetails.getUsername();
-    cartService.updateQuantity(userid, productId, quantity);
+    String userid = userDetails.getUsername(); // 로그인 ID
+    Users user = userService.findByUserid(userid); // Users 객체 가져오기
+    cartService.updateQuantity(user.getId(), productId, quantity); // Integer id 전달
     log.info("수량 변경 - 사용자: {}, 상품: {}, 수량: {}", userid, productId, quantity);
     return "redirect:/mypage/cart";
   }
@@ -115,7 +116,8 @@ public class MyPageController {
   public String deleteCartItem(@AuthenticationPrincipal User userDetails,
                                @RequestParam("productId") Integer productId) {
     String userid = userDetails.getUsername();
-    cartService.removeItem(userid, productId);
+    Users user = userService.findByUserid(userid);
+    cartService.removeItem(user.getId(), productId);
     log.info("장바구니 항목 삭제 - 사용자: {}, 상품: {}", userid, productId);
     return "redirect:/mypage/cart";
   }
