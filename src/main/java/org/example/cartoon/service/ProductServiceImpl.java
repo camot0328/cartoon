@@ -7,6 +7,9 @@ import org.example.cartoon.entity.Stock;
 import org.example.cartoon.entity.StockState;
 import org.example.cartoon.repository.ProductRepository;
 import org.example.cartoon.repository.StockRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,8 +80,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
   @Override
   @Transactional
   public void softDeleteProduct(Integer productId) {
-    Product product = productRepository.findById(productId)
-        .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+    Product product = productRepository.findByIdWithStock(productId);
     Stock stock = stockRepository.findByProduct(product)
         .orElseThrow(() -> new IllegalArgumentException("해당 상품의 재고 정보가 없습니다."));
     stock.setState(StockState.삭제됨);
@@ -88,9 +90,32 @@ public class ProductServiceImpl implements ProductServiceInterface {
   @Override
   @Transactional
   public void restoreProduct(Integer productId) {
-    Stock stock = stockRepository.findById(productId)
-        .orElseThrow(() -> new IllegalArgumentException("상품 재고 정보가 없습니다."));
-    stock.setState(StockState.판매중); // 원래 상태로 복원
+    Product product = productRepository.findByIdWithStock(productId);
+    Stock stock = stockRepository.findByProduct(product)
+        .orElseThrow(() -> new IllegalArgumentException("해당 상품의 재고 정보가 없습니다."));
+    stock.setState(StockState.판매중);
     stockRepository.save(stock);
   }
+
+  @Override
+  public List<Product> searchByKeywordWithStock(String keyword) {
+    return productRepository.findByTitleContainingOrAuthorContainingWithStock(keyword, keyword);
+  }
+
+  @Override
+  public Page<Product> searchByKeywordWithStockPaged(String keyword, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return productRepository.findByKeywordWithStock(keyword, pageable);
+  }
+
+  @Override
+  public List<Product> getLatestProducts() {
+    return productRepository.findTop10ByOrderByIdDesc(); // 또는 최신 등록일 기준
+  }
+
+  @Override
+  public Page<Product> getAllWithStock(Pageable pageable) {
+    return productRepository.findAllWithStock(pageable);
+  }
+
 }

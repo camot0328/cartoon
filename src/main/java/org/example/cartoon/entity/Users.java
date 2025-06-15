@@ -1,7 +1,9 @@
 package org.example.cartoon.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class Users {
   @Column(nullable = false, length = 50)
   private String nickname;
 
-  @Column(nullable = false, length = 100)
+  @Column(nullable = false, length = 500)
   private String password;
 
   @Enumerated(EnumType.STRING)
@@ -35,6 +37,9 @@ public class Users {
   private LocalDateTime createdAt;
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @EqualsAndHashCode.Exclude
+  @JsonIgnore
+  @ToString.Exclude
   private Cart cart;
 
   @OneToMany(mappedBy = "user")

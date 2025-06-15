@@ -1,10 +1,8 @@
 package org.example.cartoon.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +20,9 @@ public class Cart {
   @OneToOne
   @MapsId
   @JoinColumn(name = "user_id")
+  @EqualsAndHashCode.Exclude
+  @JsonIgnore
+  @ToString.Exclude
   private Users user;
 
   @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)

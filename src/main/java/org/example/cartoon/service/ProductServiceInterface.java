@@ -1,6 +1,9 @@
 package org.example.cartoon.service;
 
 import org.example.cartoon.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface ProductServiceInterface {
@@ -14,5 +17,9 @@ public interface ProductServiceInterface {
   void softDeleteProduct(Integer productId);
   void restoreProduct(Integer productId);
   List<Product> getVisibleProducts();
+  List<Product> searchByKeywordWithStock(String keyword);
+  Page<Product> searchByKeywordWithStockPaged(String keyword, int page, int size);
+  List<Product> getLatestProducts();
+  Page<Product> getAllWithStock(Pageable pageable);
 
 }

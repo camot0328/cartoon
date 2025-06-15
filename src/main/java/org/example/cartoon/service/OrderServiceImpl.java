@@ -14,11 +14,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderServiceInterface{
-  private UserRepository userRepository;
-  private ProductRepository productRepository;
-  private OrderRepository orderRepository;
-  private OrderItemRepository orderItemRepository;
-  private StockRepository stockRepository;
+  private final UserRepository userRepository;
+  private final ProductRepository productRepository;
+  private final OrderRepository orderRepository;
+  private final OrderItemRepository orderItemRepository;
+  private final StockRepository stockRepository;
 
   @Override
   @Transactional
@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderServiceInterface{
     }
 
     if (startDate != null) {
-      return orderRepository.findByOrderDate(userId, startDate, endDate);
+      return orderRepository.findByUserIdAndOrderDateBetween(userId, startDate, endDate);
     } else {
       return orderRepository.findByUserId(userId);
     }

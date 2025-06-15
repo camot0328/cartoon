@@ -30,6 +30,16 @@ public class MyPageController {
   private final UserServiceInterface userService;
   private final OrderServiceInterface orderService;
 
+  @GetMapping
+  public String myPage(@AuthenticationPrincipal User userDetails, Model model) {
+    if (userDetails == null) {
+      return "redirect:/login";
+    }
+
+    // 사용자 정보 불러오기 등 처리
+    return "mypage/profile"; // 예시: 마이페이지 템플릿
+  }
+
   @GetMapping("/orders")
   public String showOrderList(@AuthenticationPrincipal User userDetails,
                               @RequestParam(value = "filter", defaultValue = "all") String filter,

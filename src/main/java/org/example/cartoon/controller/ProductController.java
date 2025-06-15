@@ -3,17 +3,15 @@ package org.example.cartoon.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.cartoon.dto.ProductFormDto;
-import org.example.cartoon.entity.*;
+import org.example.cartoon.entity.Product;
 import org.example.cartoon.repository.StockRepository;
-import org.example.cartoon.service.ProductServiceImpl;
+import org.example.cartoon.service.ProductServiceInterface;
 import org.example.cartoon.service.UserServiceInterface;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -21,14 +19,18 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
-  private final ProductServiceImpl productService;
+  private final ProductServiceInterface productService;
   private final UserServiceInterface userService;
   private final StockRepository stockRepository;
 
   @GetMapping("/list")
-  public String showProductList(Model model) {
-    List<Product> products = productService.getVisibleProducts(); // 삭제 제외
-    model.addAttribute("products", products);
+  public String showProductList(@RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "15") int size,
+                                Model model) {
+    Page<Product> productPage = productService.getAllWithStock(PageRequest.of(page, size));
+    model.addAttribute("products", productPage.getContent());
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", productPage.getTotalPages());
     return "product/productList";
   }
 
@@ -37,12 +39,6 @@ public class ProductController {
     Product product = productService.getProductById(id);
     model.addAttribute("product", product);
     return "product/productInfo"; // → Thymeleaf 뷰 템플릿
-  }
-
-  @GetMapping("/search")
-  public String search(@RequestParam String keyword, Model model) {
-    model.addAttribute("products", productService.searchProducts(keyword));
-    return "product/productList";
   }
 
   @GetMapping("/add")

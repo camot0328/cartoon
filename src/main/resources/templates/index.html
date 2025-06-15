@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>만화 쇼핑몰 - 메인</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header>
+    <h1>📚 만화 쇼핑몰</h1>
+    <nav>
+        <form th:action="@{/search}" method="get">
+            <input type="text" name="query" placeholder="검색어를 입력하세요">
+            <button type="submit">검색</button>
+        </form>
+        <div>
+            <a href="/product/list">전체 상품</a>
+            <span th:unless="${#authorization.expression('isAuthenticated()')}">
+            <a href="/login">로그인</a>
+            </span>
+            <span th:if="${#authorization.expression('isAuthenticated()')}">
+            <a href="/logout">로그아웃</a>
+            <a href="/mypage">마이페이지</a>
+            </span>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section>
+        <h2>📌 신상품</h2>
+        <div class="product-list">
+            <div th:each="product : ${products}" class="product-item">
+                <img th:src="${product.thumbnailImg}" alt="이미지 없음" />
+                <p th:text="${product.title}">제목</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2025 Cartoon Mall</p>
+</footer>
+</body>
+</html>
